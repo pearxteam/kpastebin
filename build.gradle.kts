@@ -19,7 +19,7 @@ plugins {
     signing
 }
 
-group = "net.pearx.@PROJECT_NAME@"
+group = "net.pearx.kpastebin"
 description = projectDescription
 
 configure<MultiGradleExtension> {
@@ -33,7 +33,7 @@ configure<PublishingExtension> {
         pom {
             name.set(artifactId)
             description.set(projectDescription)
-            url.set("https://github.com/pearxteam/@PROJECT_NAME@")
+            url.set("https://github.com/pearxteam/kpastebin")
             licenses {
                 license {
                     name.set("Mozilla Public License, Version 2.0")
@@ -58,17 +58,17 @@ configure<PublishingExtension> {
                 }
             }
             scm {
-                url.set("https://github.com/pearxteam/@PROJECT_NAME@")
-                connection.set("scm:git:git://github.com/pearxteam/@PROJECT_NAME@")
-                developerConnection.set("scm:git:git://github.com/pearxteam/@PROJECT_NAME@")
+                url.set("https://github.com/pearxteam/kpastebin")
+                connection.set("scm:git:git://github.com/pearxteam/kpastebin")
+                developerConnection.set("scm:git:git://github.com/pearxteam/kpastebin")
             }
             issueManagement {
                 system.set("GitHub")
-                url.set("https://github.com/pearxteam/@PROJECT_NAME@/issues")
+                url.set("https://github.com/pearxteam/kpastebin/issues")
             }
             ciManagement {
                 system.set("GitHub")
-                url.set("https://github.com/pearxteam/@PROJECT_NAME@/actions")
+                url.set("https://github.com/pearxteam/kpastebin/actions")
             }
         }
     }
@@ -123,7 +123,7 @@ configure<SigningExtension> {
 configure<GithubReleaseExtension> {
     setToken(githubAccessToken)
     setOwner("pearxteam")
-    setRepo("@PROJECT_NAME@")
+    setRepo("kpastebin")
     setTargetCommitish("master")
     setBody(projectChangelog)
     //setReleaseAssets((publishing.publications["maven"] as MavenPublication).artifacts.map { it.file })

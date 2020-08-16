@@ -1,4 +1,4 @@
-rootProject.name = "@PROJECT_NAME@"
+rootProject.name = "kpastebin"
 
 pluginManagement {
     val multigradleVersion: String by settings
