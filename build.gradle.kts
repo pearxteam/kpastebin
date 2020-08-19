@@ -6,8 +6,6 @@ val projectChangelog: String by project
 val projectDescription: String by project
 
 val ktorVersion: String by project
-val xmlutilVersion: String by project
-val kotlinxSerializationVersion: String by project
 
 val pearxRepoUsername: String? by project
 val pearxRepoPassword: String? by project
@@ -20,7 +18,6 @@ val devBuildNumber: String? by project
 plugins {
     id("net.pearx.multigradle.simple.project")
     kotlin("multiplatform") apply (false)
-    kotlin("plugin.serialization")
     id("com.github.breadmoirai.github-release")
     `maven-publish`
     signing
@@ -48,8 +45,6 @@ kotlinMpp {
         val commonMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxSerializationVersion")
-                implementation("net.devrieze:xmlutil-serialization:$xmlutilVersion")
             }
         }
 

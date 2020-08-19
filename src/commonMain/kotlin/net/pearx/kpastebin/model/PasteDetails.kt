@@ -1,40 +1,44 @@
 package net.pearx.kpastebin.model
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import nl.adaptivity.xmlutil.serialization.XmlElement
+import net.pearx.kpastebin.internal.XML_PARENT_REGEX
+import net.pearx.kpastebin.internal.XML_PROPERTY_REGEX
 
-@SerialName("paste")
-@Serializable
 public data class PasteDetails(
-    @SerialName("paste_key")
-    @XmlElement(true)
     val key: String,
-    @SerialName("paste_date")
-    @XmlElement(true)
     val date: Int,
-    @SerialName("paste_title")
-    @XmlElement(true)
     val title: String,
-    @SerialName("paste_size")
-    @XmlElement(true)
     val size: Int,
-    @SerialName("paste_expire_date")
-    @XmlElement(true)
     val expireDate: Int,
-    @SerialName("paste_private")
-    @XmlElement(true)
     val privacy: Privacy,
-    @SerialName("paste_format_long")
-    @XmlElement(true)
     val formatLong: String,
-    @SerialName("paste_format_short")
-    @XmlElement(true)
     val formatShort: String,
-    @SerialName("paste_url")
-    @XmlElement(true)
     val url: String,
-    @SerialName("paste_hits")
-    @XmlElement(true)
     val hist: Int
-)
+) {
+    internal companion object {
+        fun parseList(input: String): List<PasteDetails> {
+            val lst = mutableListOf<PasteDetails>()
+            // it's a hack because currently there's no multiplatform API to parse XML with Kotlin/Native support
+            for (paste in XML_PARENT_REGEX.findAll(input)) {
+                if (paste.groupValues[1] == "paste") {
+                    val map = XML_PROPERTY_REGEX.findAll(paste.groupValues[2]).associate { it.groupValues[1].substring(6) to it.groupValues[2] } // .substring(6) is here to cut the 'paste_' part of each property.
+                    lst.add(PasteDetails(
+                        map.getValue("key"),
+                        map.getValue("date").toInt(),
+                        map.getValue("title"),
+                        map.getValue("size").toInt(),
+                        map.getValue("expire_date").toInt(),
+                        Privacy.values()[map.getValue("private").toInt()],
+                        map.getValue("format_long"),
+                        map.getValue("format_short"),
+                        map.getValue("url"),
+                        map.getValue("hits").toInt()
+                    ))
+                }
+                else
+                    throw IllegalArgumentException(input)
+            }
+            return lst
+        }
+    }
+}

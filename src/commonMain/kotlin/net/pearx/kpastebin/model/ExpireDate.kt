@@ -1,9 +1,5 @@
 package net.pearx.kpastebin.model
 
-import kotlinx.serialization.*
-import net.pearx.kpastebin.internal.MODEL_PACKAGE
-
-@Serializable
 public enum class ExpireDate(internal val code: String) {
     NEVER("N"),
     TEN_MINUTES("10M"),
@@ -15,17 +11,7 @@ public enum class ExpireDate(internal val code: String) {
     SIX_MONTHS("6M"),
     ONE_YEAR("1Y");
 
-    @Serializer(forClass = ExpireDate::class)
-    internal companion object Ser : KSerializer<ExpireDate> {
-        override val descriptor: SerialDescriptor = PrimitiveDescriptor("$MODEL_PACKAGE.ExpireDate", PrimitiveKind.STRING)
-
-        override fun deserialize(decoder: Decoder): ExpireDate {
-            val value = decoder.decodeString()
-            return values().firstOrNull { it.code == value } ?: throw NoSuchElementException("Can't find ExpireDate with key $value")
-        }
-
-        override fun serialize(encoder: Encoder, value: ExpireDate) {
-            encoder.encodeString(value.code)
-        }
+    internal companion object {
+        fun forCode(code: String) = values().first { it.code == code }
     }
 }

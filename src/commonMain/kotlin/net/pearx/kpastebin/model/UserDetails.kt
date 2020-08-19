@@ -1,37 +1,39 @@
 package net.pearx.kpastebin.model
 
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import nl.adaptivity.xmlutil.serialization.XmlElement
+import net.pearx.kpastebin.internal.XML_PARENT_REGEX
+import net.pearx.kpastebin.internal.XML_PROPERTY_REGEX
 
-@SerialName("user")
-@Serializable
 public data class UserDetails(
-    @SerialName("user_name")
-    @XmlElement(true)
     val name: String,
-    @SerialName("user_format_short")
-    @XmlElement(true)
     val defaultFormatShort: String,
-    @SerialName("user_expiration")
-    @XmlElement(true)
     val defaultExpiration: ExpireDate,
-    @SerialName("user_avatar_url")
-    @XmlElement(true)
     val avatarUrl: String,
-    @SerialName("user_private")
-    @XmlElement(true)
     val defaultPrivacy: Privacy,
-    @SerialName("user_website")
-    @XmlElement(true)
     val website: String,
-    @SerialName("user_email")
-    @XmlElement(true)
     val email: String,
-    @SerialName("user_location")
-    @XmlElement(true)
     val location: String,
-    @SerialName("user_account_type")
-    @XmlElement(true)
     val accountType: AccountType
-)
+) {
+    internal companion object {
+        fun parse(input: String): UserDetails {
+            // it's a hack because currently there's no multiplatform API to parse XML with Kotlin/Native support
+            val user = XML_PARENT_REGEX.matchEntire(input)
+            if (user != null && user.groupValues[1] == "user") {
+                val map = XML_PROPERTY_REGEX.findAll(user.groupValues[2]).associate { it.groupValues[1].substring(5) to it.groupValues[2] } // .substring(5) is here to cut the 'user_' part of each property.
+                return UserDetails(
+                    map.getValue("name"),
+                    map.getValue("format_short"),
+                    ExpireDate.forCode(map.getValue("expiration")),
+                    map.getValue("avatar_url"),
+                    Privacy.values()[map.getValue("private").toInt()],
+                    map.getValue("website"),
+                    map.getValue("email"),
+                    map.getValue("location"),
+                    AccountType.values()[map.getValue("account_type").toInt()]
+                )
+            }
+            else
+                throw IllegalArgumentException(input)
+        }
+    }
+}
