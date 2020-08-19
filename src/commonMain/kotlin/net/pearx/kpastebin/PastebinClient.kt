@@ -14,7 +14,7 @@ import net.pearx.kpastebin.model.UserDetails
 import nl.adaptivity.xmlutil.serialization.XML
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
-class PastebinClient(private val devKey: String) {
+public class PastebinClient(private val devKey: String) {
     private val http = HttpClient {
         defaultRequest {
             contentType(ContentType.Application.FormUrlEncoded)
@@ -37,7 +37,7 @@ class PastebinClient(private val devKey: String) {
 
     private suspend inline fun sendRequest(url: String, parametersBuilder: ParametersBuilder.() -> Unit) = sendRequest(url, Parameters.build(parametersBuilder))
 
-    suspend fun createPaste(
+    public suspend fun createPaste(
         text: String,
         userKey: String? = null,
         name: String? = null,
@@ -61,14 +61,14 @@ class PastebinClient(private val devKey: String) {
         }
     }
 
-    suspend fun login(username: String, password: String): String {
+    public suspend fun login(username: String, password: String): String {
         return sendRequest(API_URL_LOGIN) {
             append("api_user_name", username)
             append("api_user_password", password)
         }
     }
 
-    suspend fun listPastes(userKey: String, resultsLimit: Int? = null): List<PasteDetails> {
+    public suspend fun listPastes(userKey: String, resultsLimit: Int? = null): List<PasteDetails> {
         val out = sendRequest(API_URL_POST) {
             append("api_user_key", userKey)
             append("api_option", "list")
@@ -84,7 +84,7 @@ class PastebinClient(private val devKey: String) {
     @SerialName("root")
     private data class ListPastesResponse(@XmlSerialName("paste", "", "") val data: List<PasteDetails>)
 
-    suspend fun deletePaste(userKey: String, pasteKey: String) {
+    public suspend fun deletePaste(userKey: String, pasteKey: String) {
         val out = sendRequest(API_URL_POST) {
             append("api_option", "delete")
             append("api_user_key", userKey)
@@ -94,7 +94,7 @@ class PastebinClient(private val devKey: String) {
             throw PastebinException(out)
     }
 
-    suspend fun getUserDetails(userKey: String): UserDetails {
+    public suspend fun getUserDetails(userKey: String): UserDetails {
         val out = sendRequest(API_URL_POST) {
             append("api_option", "userdetails")
             append("api_user_key", userKey)
@@ -102,7 +102,7 @@ class PastebinClient(private val devKey: String) {
         return xml.parse(UserDetails.serializer(), out)
     }
 
-    suspend fun getPaste(userKey: String, pasteKey: String): String {
+    public suspend fun getPaste(userKey: String, pasteKey: String): String {
         return sendRequest(API_URL_RAW) {
             append("api_option", "show_paste")
             append("api_user_key", userKey)

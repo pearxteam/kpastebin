@@ -1,5 +1,6 @@
-package net.pearx.kpastebin
+package net.pearx.kpastebin.internal
 
+import net.pearx.kpastebin.*
 import net.pearx.kpastebin.model.Privacy
 
 private const val BAD_API_REQUEST = "Bad API request, "
@@ -31,21 +32,3 @@ internal fun checkPastebinResponse(response: String) {
         }
     }
 }
-
-class InvalidUserKeyException(message: String, cause: Throwable? = null) : PastebinException(message, cause)
-
-class FreePasteLimitException(val privacy: Privacy, message: String, cause: Throwable? = null) : PastebinException(message, cause)
-class PasteSizeException(message: String, cause: Throwable? = null) : PastebinException(message, cause)
-class EmptyPasteException(message: String, cause: Throwable? = null) : PastebinException(message, cause)
-class InvalidPasteFormatException(message: String, cause: Throwable? = null) : PastebinException(message, cause)
-
-class InvalidLoginException(message: String, cause: Throwable? = null) : PastebinException(message, cause)
-class AccountNotActiveException(message: String, cause: Throwable? = null) : PastebinException(message, cause)
-
-class InvalidPermissionException(message: String, cause: Throwable? = null) : PastebinException(message, cause)
-
-class PasteNotFoundException(message: String, cause: Throwable? = null) : PastebinException(message, cause)
-
-class PastePerDayLimitException(message: String, cause: Throwable? = null) : PastebinException(message, cause)
-
-open class PastebinException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)

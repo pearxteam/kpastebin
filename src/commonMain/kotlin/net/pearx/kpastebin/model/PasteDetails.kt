@@ -6,7 +6,7 @@ import nl.adaptivity.xmlutil.serialization.XmlElement
 
 @SerialName("paste")
 @Serializable
-data class PasteDetails(
+public data class PasteDetails(
     @SerialName("paste_key")
     @XmlElement(true)
     val key: String,

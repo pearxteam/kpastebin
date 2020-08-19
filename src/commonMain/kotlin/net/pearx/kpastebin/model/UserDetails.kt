@@ -6,7 +6,7 @@ import nl.adaptivity.xmlutil.serialization.XmlElement
 
 @SerialName("user")
 @Serializable
-data class UserDetails(
+public data class UserDetails(
     @SerialName("user_name")
     @XmlElement(true)
     val name: String,

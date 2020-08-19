@@ -1,36 +1,40 @@
 package net.pearx.kpastebin
 
 import net.pearx.kpastebin.model.ExpireDate
+import net.pearx.kpastebin.model.PasteDetails
 import net.pearx.kpastebin.model.Privacy
+import net.pearx.kpastebin.model.UserDetails
 
-class PastebinAccount(private val client: PastebinClient) {
-    var userKey: String? = null
+public class PastebinAccount(private val client: PastebinClient) {
+    public var userKey: String? = null
 
     private fun checkUserKeyAndReturn(): String {
         val userKey = userKey
-        if(userKey == null)
+        if (userKey == null)
             throw InvalidUserKeyException("You haven't initialized the userKey property. It can be done by setting it directly or using the 'login' function.")
         else
             return userKey
     }
 
-    suspend fun login(username: String, password: String) {
+    public suspend fun login(username: String, password: String) {
         userKey = client.login(username, password)
     }
 
-    suspend fun createPaste(
+    public suspend fun createPaste(
         text: String,
         name: String? = null,
         format: String? = null,
         privacy: Privacy? = null,
         expireDate: ExpireDate? = null
-    ) = client.createPaste(text, checkUserKeyAndReturn(), name, format, privacy, expireDate)
+    ): String = client.createPaste(text, checkUserKeyAndReturn(), name, format, privacy, expireDate)
 
-    suspend fun listPastes(resultsLimit: Int? = null) = client.listPastes(checkUserKeyAndReturn(), resultsLimit)
+    public suspend fun listPastes(resultsLimit: Int? = null): List<PasteDetails> = client.listPastes(checkUserKeyAndReturn(), resultsLimit)
 
-    suspend fun deletePaste(pasteKey: String) = client.deletePaste(checkUserKeyAndReturn(), pasteKey)
+    public suspend fun deletePaste(pasteKey: String) {
+        client.deletePaste(checkUserKeyAndReturn(), pasteKey)
+    }
 
-    suspend fun getUserDetails() = client.getUserDetails(checkUserKeyAndReturn())
+    public suspend fun getUserDetails(): UserDetails = client.getUserDetails(checkUserKeyAndReturn())
 
-    suspend fun getPaste(pasteKey: String) = client.getPaste(checkUserKeyAndReturn(), pasteKey)
+    public suspend fun getPaste(pasteKey: String): String = client.getPaste(checkUserKeyAndReturn(), pasteKey)
 }

@@ -4,7 +4,7 @@ import kotlinx.serialization.*
 import net.pearx.kpastebin.internal.MODEL_PACKAGE
 
 @Serializable
-enum class ExpireDate(val code: String) {
+public enum class ExpireDate(internal val code: String) {
     NEVER("N"),
     TEN_MINUTES("10M"),
     ONE_HOUR("1H"),
@@ -16,7 +16,7 @@ enum class ExpireDate(val code: String) {
     ONE_YEAR("1Y");
 
     @Serializer(forClass = ExpireDate::class)
-    companion object Ser : KSerializer<ExpireDate> {
+    internal companion object Ser : KSerializer<ExpireDate> {
         override val descriptor: SerialDescriptor = PrimitiveDescriptor("$MODEL_PACKAGE.ExpireDate", PrimitiveKind.STRING)
 
         override fun deserialize(decoder: Decoder): ExpireDate {

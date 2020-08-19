@@ -5,7 +5,7 @@ import net.pearx.kpastebin.internal.EnumIntSerializer
 import net.pearx.kpastebin.internal.MODEL_PACKAGE
 
 @Serializable(with = Privacy.Ser::class)
-enum class Privacy {
+public enum class Privacy {
     PUBLIC,
     UNLISTED,
     PRIVATE;
