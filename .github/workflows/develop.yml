@@ -72,8 +72,3 @@ jobs:
         env:
           PGP_KEY_PRIVATE: ${{secrets.S_PGP_KEY_PRIVATE}}
       - run: './gradlew --no-daemon publishDevelop -PdevBuildNumber=${{ github.run_number }} -PpearxRepoUsername=${{ secrets.S_PEARX_REPO_USERNAME }} -PpearxRepoPassword=${{ secrets.S_PEARX_REPO_PASSWORD }} -Psigning.keyId=${{ secrets.S_PGP_KEY_PUBID }} -Psigning.password="${{ secrets.S_PGP_KEY_PASSWORD }}" -Psigning.secretKeyRingFile=private.key'
-      - uses: codecov/codecov-action@v1
-        with:
-          file: ./build/jacoco/jvmTest.exec
-          flags: unittests,jvm
-          fail_ci_if_error: true
