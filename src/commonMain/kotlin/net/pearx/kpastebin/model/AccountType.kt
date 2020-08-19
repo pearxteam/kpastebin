@@ -1,12 +1,12 @@
 package net.pearx.kpastebin.model
 
 /**
- * The list of Pastebin account types
+ * The list of Pastebin account types.
  */
 public enum class AccountType {
-    /** Free basic account */
+    /** Free basic account. */
     NORMAL,
 
-    /** Paid pro account */
+    /** Paid pro account. */
     PRO;
 }

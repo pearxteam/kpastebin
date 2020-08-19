@@ -4,26 +4,26 @@ import net.pearx.kpastebin.internal.XML_PARENT_REGEX
 import net.pearx.kpastebin.internal.XML_PROPERTY_REGEX
 
 /**
- * A detailed Pastebin user information
+ * A detailed Pastebin user information.
  */
 public data class UserDetails(
-    /** Full user name */
+    /** Full user name. */
     val name: String,
-    /** Default paste syntax highlighting language for this user in a short format (e.g., kotlin or csharp) */
+    /** Default paste syntax highlighting language for this user in a short format (e.g., kotlin or csharp). */
     val defaultFormatShort: String,
-    /** Default paste expiration duration for this user */
+    /** Default paste expiration duration for this user. */
     val defaultExpiration: ExpireDate,
-    /** User avatar URL */
+    /** User avatar URL. */
     val avatarUrl: String,
-    /** Default paste privacy status for this user */
+    /** Default paste privacy status for this user. */
     val defaultPrivacy: Privacy,
-    /** User website */
+    /** User website. */
     val website: String,
-    /** User E-Mail */
+    /** User E-Mail. */
     val email: String,
-    /** User location */
+    /** User location. */
     val location: String,
-    /** User account type */
+    /** User account type. */
     val accountType: AccountType
 ) {
     internal companion object {
