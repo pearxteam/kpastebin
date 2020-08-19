@@ -1,8 +1,13 @@
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseExtension
 import net.pearx.multigradle.util.MultiGradleExtension
+import net.pearx.multigradle.util.kotlinMpp
 
 val projectChangelog: String by project
 val projectDescription: String by project
+
+val ktorVersion: String by project
+val xmlutilVersion: String by project
+val kotlinxSerializationVersion: String by project
 
 val pearxRepoUsername: String? by project
 val pearxRepoPassword: String? by project
@@ -11,9 +16,11 @@ val sonatypeOssPassword: String? by project
 val githubAccessToken: String? by project
 val devBuildNumber: String? by project
 
+
 plugins {
     id("net.pearx.multigradle.simple.project")
-    id("org.jetbrains.kotlin.multiplatform") apply (false)
+    kotlin("multiplatform") apply (false)
+    kotlin("plugin.serialization")
     id("com.github.breadmoirai.github-release")
     `maven-publish`
     signing
@@ -25,6 +32,62 @@ description = projectDescription
 configure<MultiGradleExtension> {
     if (devBuildNumber != null) {
         projectVersion = "$projectVersion-dev-$devBuildNumber"
+    }
+}
+
+repositories {
+    maven {
+        url = uri("https://dl.bintray.com/pdvrieze/maven")
+    }
+}
+
+kotlinMpp {
+    explicitApi()
+
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-core:$ktorVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxSerializationVersion")
+                implementation("net.devrieze:xmlutil-serialization:$xmlutilVersion")
+            }
+        }
+
+        val androidMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-android:$ktorVersion")
+            }
+        }
+
+        val jvmMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-cio:$ktorVersion")
+            }
+        }
+
+        val jsMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-js:$ktorVersion")
+            }
+        }
+
+        val posixMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-curl:$ktorVersion")
+            }
+        }
+
+        val appleMobileMain by getting {
+            dependencies {
+                implementation("io.ktor:ktor-client-ios:$ktorVersion")
+            }
+        }
+
+        val jvmTest by getting {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
+            }
+        }
     }
 }
 
