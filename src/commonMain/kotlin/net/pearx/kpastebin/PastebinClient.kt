@@ -4,9 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.features.defaultRequest
 import io.ktor.client.request.post
 import io.ktor.http.*
-import net.pearx.kpastebin.internal.API_URL_LOGIN
-import net.pearx.kpastebin.internal.API_URL_POST
-import net.pearx.kpastebin.internal.API_URL_RAW
+import net.pearx.kpastebin.internal.*
 import net.pearx.kpastebin.internal.checkPastebinResponse
 import net.pearx.kpastebin.model.ExpireDate
 import net.pearx.kpastebin.model.PasteDetails
@@ -14,14 +12,9 @@ import net.pearx.kpastebin.model.Privacy
 import net.pearx.kpastebin.model.UserDetails
 
 public class PastebinClient(private val devKey: String) {
-    private val http = HttpClient {
-        defaultRequest {
-            contentType(ContentType.Application.FormUrlEncoded)
-        }
-    }
-
     private suspend fun sendRequest(url: String, parameters: Parameters): String {
-        val out = http.post<String> {
+        val out = Http.post<String> {
+            contentType(ContentType.Application.FormUrlEncoded)
             this.url.takeFrom(url)
             body = Parameters.build {
                 append("api_dev_key", devKey)
@@ -103,9 +96,4 @@ public class PastebinClient(private val devKey: String) {
             append("api_paste_key", pasteKey)
         }
     }
-
-//
-//    suspend fun getPaste(pasteKey: String): String? {
-//        return http.get<String> { url.takeFrom("$URL_RAW/$pasteKey") }
-//    }
 }
