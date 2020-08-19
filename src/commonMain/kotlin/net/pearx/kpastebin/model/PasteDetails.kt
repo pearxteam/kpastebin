@@ -3,17 +3,30 @@ package net.pearx.kpastebin.model
 import net.pearx.kpastebin.internal.XML_PARENT_REGEX
 import net.pearx.kpastebin.internal.XML_PROPERTY_REGEX
 
+/**
+ * A detailed Pastebin paste information
+ */
 public data class PasteDetails(
+    /** Paste key */
     val key: String,
+    /** Paste publication date */
     val date: Int,
+    /** Paste title */
     val title: String,
+    /** Paste size in bytes */
     val size: Int,
+    /** Paste expiration date */ // todo
     val expireDate: Int,
+    /** Paste privacy status */
     val privacy: Privacy,
+    /** Paste syntax highlighting language in a user-readable format (e.g., Kotlin or C#) */
     val formatLong: String,
+    /** Paste syntax highlighting language in a short format (e.g. kotlin or csharp) */
     val formatShort: String,
+    /** Paste URL */
     val url: String,
-    val hist: Int
+    /** Paste views count */
+    val hits: Int
 ) {
     internal companion object {
         fun parseList(input: String): List<PasteDetails> {
