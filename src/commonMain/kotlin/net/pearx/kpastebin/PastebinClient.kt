@@ -9,9 +9,10 @@ import net.pearx.kpastebin.model.Privacy
 import net.pearx.kpastebin.model.UserDetails
 
 /**
- * Pastebin API client with specified unique developer API key [devKey].
+ * Pastebin API client with specified unique developer API key.
  * You can get your key on [official Pastebin website](https://pastebin.com/doc_api#1).
  *
+ * @param devKey Unique developer API key
  * @param userKey user key used for requests. Use null for guest user.
  */
 public class PastebinClient(
