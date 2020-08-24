@@ -28,7 +28,7 @@ public data class UserDetails(
 ) {
     internal companion object {
         fun parse(input: String): UserDetails {
-            // it's a hack because currently there's no multiplatform API to parse XML with Kotlin/Native support
+            // it's a hack because currently there's no multiplatform API to parse XML with Kotlin/Native support. xmlutil doesn't support Kotlin/Native :(.
             val user = XML_PARENT_REGEX.matchEntire(input)
             if (user != null && user.groupValues[1] == "user") {
                 val map = XML_PROPERTY_REGEX.findAll(user.groupValues[2]).associate { it.groupValues[1].substring(5) to it.groupValues[2] } // .substring(5) is here to cut the 'user_' part of each property.

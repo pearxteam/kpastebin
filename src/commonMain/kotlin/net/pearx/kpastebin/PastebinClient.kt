@@ -1,5 +1,8 @@
 package net.pearx.kpastebin
 
+import io.ktor.client.HttpClient
+import io.ktor.client.features.ClientRequestException
+import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.*
 import net.pearx.kpastebin.internal.*
@@ -12,27 +15,29 @@ import net.pearx.kpastebin.model.UserDetails
  * Pastebin API client with specified unique developer API key.
  * You can get your key on [official Pastebin website](https://pastebin.com/doc_api#1).
  *
+ * @param http Ktor [HttpClient] to use
  * @param devKey Unique developer API key
  * @param userKey user key used for requests. Use null for guest user.
  */
 public class PastebinClient(
+    private val http: HttpClient,
     private val devKey: String,
     /**
      * User key used for requests. Use null for guest user. It also can be set using [login] method.
      */
     public var userKey: String? = null
 ) {
-    private suspend fun sendRequest(url: String, userKeyRequired: Boolean, parameters: Parameters): String {
-        val userKey = userKey
-        if (userKeyRequired && userKey == null)
+    private suspend fun sendRequest(url: String, userKeyRequired: Boolean, userKey: String?, parameters: Parameters): String {
+        val usrKey = userKey ?: this.userKey
+        if (userKeyRequired && usrKey == null)
             throw InvalidUserKeyException("The 'userKey' property is null. It can be initialized by setting it directly or using the 'login' function.")
-        val out = Http.post<String> {
+        val out = http.post<String> {
             contentType(ContentType.Application.FormUrlEncoded)
             this.url.takeFrom(url)
             body = Parameters.build {
                 append("api_dev_key", devKey)
-                if (userKey != null)
-                    append("api_user_key", userKey)
+                if (usrKey != null)
+                    append("api_user_key", usrKey)
                 appendAll(parameters)
             }.formUrlEncode()
         }
@@ -40,7 +45,7 @@ public class PastebinClient(
         return out
     }
 
-    private suspend inline fun sendRequest(url: String, userKeyRequired: Boolean, parametersBuilder: ParametersBuilder.() -> Unit) = sendRequest(url, userKeyRequired, Parameters.build(parametersBuilder))
+    private suspend inline fun sendRequest(url: String, userKeyRequired: Boolean, userKey: String? = null, parametersBuilder: ParametersBuilder.() -> Unit) = sendRequest(url, userKeyRequired, userKey, Parameters.build(parametersBuilder))
 
     /**
      * Publishes a new paste with specified [text].
@@ -69,7 +74,7 @@ public class PastebinClient(
             append("api_paste_code", text)
             append("api_paste_name", name)
             append("api_paste_format", format)
-            append("api_privacy", privacy.ordinal.toString())
+            append("api_paste_private", privacy.ordinal.toString())
             append("api_paste_expire_date", expireDate.code)
         }
     }
@@ -135,16 +140,26 @@ public class PastebinClient(
 
     /**
      * Gets text of a paste by its [pasteKey].
+     * If [userKey] is null, you can get only public pastes.
      *
-     * @see net.pearx.kpastebin.getPaste
-     *
-     * @throws InvalidUserKeyException when [userKey] is null, expired or invalid.
+     * @throws InvalidUserKeyException when [userKey] is expired or invalid.
      * @throws PasteNotFoundException when no paste with such [pasteKey] is found.
      */
     public suspend fun getPaste(pasteKey: String): String {
-        return sendRequest(API_URL_RAW, true) {
-            append("api_option", "show_paste")
-            append("api_paste_key", pasteKey)
-        }
+        val userKey = userKey // cache userKey because it can change
+        return if (userKey == null)
+            try {
+                http.get { url.takeFrom("$URL_RAW/$pasteKey") }
+            } catch(ex: ClientRequestException) {
+                if(ex.response?.status == HttpStatusCode.NotFound)
+                    throw PasteNotFoundException(ex.message, ex)
+                else
+                    throw ex
+            }
+        else
+            sendRequest(API_URL_RAW, false, userKey) {
+                append("api_option", "show_paste")
+                append("api_paste_key", pasteKey)
+            }
     }
 }

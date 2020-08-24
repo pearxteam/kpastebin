@@ -31,7 +31,7 @@ public data class PasteDetails(
     internal companion object {
         fun parseList(input: String): List<PasteDetails> {
             val lst = mutableListOf<PasteDetails>()
-            // it's a hack because currently there's no multiplatform API to parse XML with Kotlin/Native support
+            // it's a hack because currently there's no multiplatform API to parse XML with Kotlin/Native support. xmlutil doesn't support Kotlin/Native :(.
             for (paste in XML_PARENT_REGEX.findAll(input)) {
                 if (paste.groupValues[1] == "paste") {
                     val map = XML_PROPERTY_REGEX.findAll(paste.groupValues[2]).associate { it.groupValues[1].substring(6) to it.groupValues[2] } // .substring(6) is here to cut the 'paste_' part of each property.

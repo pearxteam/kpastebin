@@ -6,6 +6,7 @@ val projectChangelog: String by project
 val projectDescription: String by project
 
 val ktorVersion: String by project
+val coroutinesVersion: String by project
 
 val pearxRepoUsername: String? by project
 val pearxRepoPassword: String? by project
@@ -32,12 +33,6 @@ configure<MultiGradleExtension> {
     }
 }
 
-repositories {
-    maven {
-        url = uri("https://dl.bintray.com/pdvrieze/maven")
-    }
-}
-
 kotlinMpp {
     explicitApi()
 
@@ -48,39 +43,10 @@ kotlinMpp {
             }
         }
 
-        val androidMain by getting {
+        val commonTest by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-android:$ktorVersion")
-            }
-        }
-
-        val jvmMain by getting {
-            dependencies {
-                implementation("io.ktor:ktor-client-cio:$ktorVersion")
-            }
-        }
-
-        val jsMain by getting {
-            dependencies {
-                implementation("io.ktor:ktor-client-js:$ktorVersion")
-            }
-        }
-
-        val posixMain by getting {
-            dependencies {
-                implementation("io.ktor:ktor-client-curl:$ktorVersion")
-            }
-        }
-
-        val appleMobileMain by getting {
-            dependencies {
-                implementation("io.ktor:ktor-client-ios:$ktorVersion")
-            }
-        }
-
-        val jvmTest by getting {
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.8")
+                implementation("io.ktor:ktor-client-mock:$ktorVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
             }
         }
     }

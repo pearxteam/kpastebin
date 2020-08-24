@@ -21,6 +21,7 @@ internal fun checkPastebinResponse(response: String) {
                 "account not active" -> AccountNotActiveException(sub)
                 "invalid permission to remove paste" -> PasteNotFoundException(sub)
                 "invalid permission to view this paste or invalid api_paste_key" -> PasteNotFoundException(sub)
+                "invalid api_dev_key" -> InvalidDevKeyException(sub)
                 else -> PastebinException(sub)
             }
         }

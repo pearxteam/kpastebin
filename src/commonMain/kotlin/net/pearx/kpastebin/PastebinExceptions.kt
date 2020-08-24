@@ -2,6 +2,9 @@ package net.pearx.kpastebin
 
 import net.pearx.kpastebin.model.Privacy
 
+/** Thrown by [PastebinClient] when provided dev key is invalid. */
+public class InvalidDevKeyException(message: String, cause: Throwable? = null) : PastebinException(message, cause)
+
 /** Thrown by [PastebinClient] when provided user key is invalid, expired or null. */
 public class InvalidUserKeyException(message: String, cause: Throwable? = null) : PastebinException(message, cause)
 
@@ -27,10 +30,10 @@ public class InvalidLoginException(message: String, cause: Throwable? = null) : 
 public class AccountNotActiveException(message: String, cause: Throwable? = null) : PastebinException(message, cause)
 
 /** Thrown by [PastebinClient] when paste with specified key doesn't exist or you don't have permissions to view or delete it. */
-public class PasteNotFoundException(message: String, cause: Throwable? = null) : PastebinException(message, cause)
+public class PasteNotFoundException(message: String?, cause: Throwable? = null) : PastebinException(message, cause)
 
 /** Thrown by [PastebinClient] when paste publication limit for current IP per day is exceeded. */
 public class PastePerDayLimitException(message: String, cause: Throwable? = null) : PastebinException(message, cause)
 
 /** Generic Pastebin exception thrown by [PastebinClient]. */
-public open class PastebinException(message: String, cause: Throwable? = null) : RuntimeException(message, cause)
+public open class PastebinException(message: String?, cause: Throwable? = null) : RuntimeException(message, cause)
