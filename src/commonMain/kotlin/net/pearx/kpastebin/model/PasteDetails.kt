@@ -15,7 +15,7 @@ public data class PasteDetails(
     val title: String,
     /** Paste size in bytes. */
     val size: Int,
-    /** Paste expiration date. */ // todo
+    /** Paste expiration date in Unix time format. */
     val expireDate: Int,
     /** Paste privacy status. */
     val privacy: Privacy,
