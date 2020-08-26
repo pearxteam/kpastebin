@@ -6,6 +6,7 @@ import net.pearx.kpastebin.internal.XML_PROPERTY_REGEX
 /**
  * A detailed Pastebin paste information.
  */
+@ExperimentalUnsignedTypes
 public data class PasteDetails(
     /** Paste key. */
     val key: String,
@@ -16,7 +17,7 @@ public data class PasteDetails(
     /** Paste size in bytes. */
     val size: Int,
     /** Paste expiration date in Unix time format. */
-    val expireDate: Int,
+    val expireDate: ULong,
     /** Paste privacy status. */
     val privacy: Privacy,
     /** Paste syntax highlighting language in a user-readable format (e.g., Kotlin or C#). */
@@ -40,7 +41,7 @@ public data class PasteDetails(
                         map.getValue("date").toInt(),
                         map.getValue("title"),
                         map.getValue("size").toInt(),
-                        map.getValue("expire_date").toInt(),
+                        map.getValue("expire_date").toULong(),
                         Privacy.values()[map.getValue("private").toInt()],
                         map.getValue("format_long"),
                         map.getValue("format_short"),
