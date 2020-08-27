@@ -1,6 +1,7 @@
 import com.github.breadmoirai.githubreleaseplugin.GithubReleaseExtension
 import net.pearx.multigradle.util.MultiGradleExtension
 import net.pearx.multigradle.util.kotlinMpp
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val projectChangelog: String by project
 val projectDescription: String by project
@@ -13,13 +14,14 @@ val pearxRepoPassword: String? by project
 val sonatypeOssUsername: String? by project
 val sonatypeOssPassword: String? by project
 val githubAccessToken: String? by project
+val sonarcloudToken: String? by project
 val devBuildNumber: String? by project
-
 
 plugins {
     id("net.pearx.multigradle.simple.project")
     kotlin("multiplatform") apply (false)
     id("com.github.breadmoirai.github-release")
+    id("org.sonarqube")
     `maven-publish`
     signing
 }
@@ -125,6 +127,10 @@ configure<PublishingExtension> {
 }
 
 tasks {
+    withType<KotlinCompile> {
+        kotlinOptions.freeCompilerArgs += "-Xopt-in=kotlin.ExperimentalUnsignedTypes"
+    }
+
     val publishDevelop by registering {
         group = "publishing"
         dependsOn(withType<PublishToMavenRepository>().matching { it.repository.name.endsWith("-develop") })
@@ -147,8 +153,31 @@ configure<SigningExtension> {
 configure<GithubReleaseExtension> {
     setToken(githubAccessToken)
     setOwner("pearxteam")
-    setRepo("kpastebin")
+    setRepo(project.name)
     setTargetCommitish("master")
     setBody(projectChangelog)
     //setReleaseAssets((publishing.publications["maven"] as MavenPublication).artifacts.map { it.file })
+}
+
+fun findSourceDirectories(endsWith: String): FileCollection {
+    return files(kotlin.sourceSets.filter { it.name.endsWith(endsWith) }.map { it.kotlin.sourceDirectories }).filter { it.isDirectory }
+}
+
+if (sonarcloudToken != null) {
+    tasks.check {
+        finalizedBy("sonarqube")
+    }
+    sonarqube {
+        properties {
+            property("sonar.host.url", "https://sonarcloud.io")
+            property("sonar.login", sonarcloudToken!!)
+            property("sonar.projectKey", "pearxteam_${project.name}")
+            property("sonar.organization", "pearxteam")
+            property("sonar.sourceEncoding", "UTF-8")
+            property("sonar.sources", findSourceDirectories("Main").joinToString())
+            property("sonar.tests", findSourceDirectories("Test").joinToString())
+            property("sonar.coverage.jacoco.xmlReportPaths", "$buildDir/reports/jacoco/jacocoJvmTestReport/jacocoJvmTestReport.xml")
+            property("sonar.junit.reportPaths", "$buildDir/test-results/jvmTest/*.xml")
+        }
+    }
 }

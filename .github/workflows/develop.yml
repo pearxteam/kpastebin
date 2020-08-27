@@ -71,4 +71,4 @@ jobs:
         shell: bash
         env:
           PGP_KEY_PRIVATE: ${{secrets.S_PGP_KEY_PRIVATE}}
-      - run: './gradlew --no-daemon publishDevelop -PdevBuildNumber=${{ github.run_number }} -PpearxRepoUsername=${{ secrets.S_PEARX_REPO_USERNAME }} -PpearxRepoPassword=${{ secrets.S_PEARX_REPO_PASSWORD }} -Psigning.keyId=${{ secrets.S_PGP_KEY_PUBID }} -Psigning.password="${{ secrets.S_PGP_KEY_PASSWORD }}" -Psigning.secretKeyRingFile=private.key'
+      - run: './gradlew --no-daemon publishDevelop -PdevBuildNumber=${{ github.run_number }} -PpearxRepoUsername=${{ secrets.S_PEARX_REPO_USERNAME }} -PpearxRepoPassword=${{ secrets.S_PEARX_REPO_PASSWORD }} -Psigning.keyId=${{ secrets.S_PGP_KEY_PUBID }} -Psigning.password="${{ secrets.S_PGP_KEY_PASSWORD }}" -Psigning.secretKeyRingFile=private.key  -PsonarcloudToken=${{ secrets.SONARCLOUD_TOKEN }}'
