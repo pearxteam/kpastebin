@@ -133,10 +133,12 @@ tasks {
 
     val publishDevelop by registering {
         group = "publishing"
+        dependsOn(check)
         dependsOn(withType<PublishToMavenRepository>().matching { it.repository.name.endsWith("-develop") })
     }
     val publishRelease by registering {
         group = "publishing"
+        dependsOn(check)
         dependsOn(withType<PublishToMavenRepository>().matching { it.repository.name.endsWith("-release") })
     }
     val release by registering {
