@@ -1,3 +1,10 @@
+/*
+ * Copyright © 2020, PearX Team
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 package net.pearx.kpastebin.test
 
 import net.pearx.kpastebin.PasteNotFoundException
@@ -34,7 +41,7 @@ class LoggedInTest {
                 1297953260,
                 "javascript test",
                 15,
-                1297956860,
+                1297956860UL,
                 Privacy.PUBLIC,
                 "JavaScript",
                 "javascript",
@@ -46,7 +53,7 @@ class LoggedInTest {
                 1297694343,
                 "Welcome To Pastebin V3",
                 490,
-                0,
+                0UL,
                 Privacy.PUBLIC,
                 "None",
                 "text",

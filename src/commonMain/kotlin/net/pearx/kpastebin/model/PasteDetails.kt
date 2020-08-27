@@ -1,3 +1,10 @@
+/*
+ * Copyright © 2020, PearX Team
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
 package net.pearx.kpastebin.model
 
 import net.pearx.kpastebin.internal.XML_PARENT_REGEX
@@ -6,7 +13,6 @@ import net.pearx.kpastebin.internal.XML_PROPERTY_REGEX
 /**
  * A detailed Pastebin paste information.
  */
-@ExperimentalUnsignedTypes
 public data class PasteDetails(
     /** Paste key. */
     val key: String,
