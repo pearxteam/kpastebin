@@ -21,7 +21,8 @@ import kotlin.test.assertFailsWith
 class AnonymousTest {
     @Test
     fun gettingNonExistingPasteFailsWith404() = runTest {
-        assertFailsWith<PasteNotFoundException> {
+        // todo https://youtrack.jetbrains.com/issue/KT-37645 https://youtrack.jetbrains.com/issue/KTOR-924
+        assertFailsWith(PasteNotFoundException::class) {
             createClient("").getPaste("123")
         }
     }
