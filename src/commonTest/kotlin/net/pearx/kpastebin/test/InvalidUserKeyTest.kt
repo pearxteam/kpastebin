@@ -27,6 +27,9 @@ class InvalidUserKeyTest {
         assertFailsWith<InvalidUserKeyException> {
             createClient(userKey = "invalid").listPastes()
         }
+        assertFailsWith<InvalidUserKeyException> {
+            createClient().listPastes()
+        }
     }
 
     @Test
@@ -34,12 +37,18 @@ class InvalidUserKeyTest {
         assertFailsWith<InvalidUserKeyException> {
             createClient(userKey = "invalid").deletePaste(pastes.keys.first())
         }
+        assertFailsWith<InvalidUserKeyException> {
+            createClient().deletePaste(pastes.keys.first())
+        }
     }
 
     @Test
     fun gettingUserDetails() = runTest {
         assertFailsWith<InvalidUserKeyException> {
             createClient(userKey = "invalid").getUserDetails()
+        }
+        assertFailsWith<InvalidUserKeyException> {
+            createClient().getUserDetails()
         }
     }
 

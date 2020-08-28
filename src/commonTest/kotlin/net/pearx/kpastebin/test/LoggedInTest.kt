@@ -9,10 +9,7 @@ package net.pearx.kpastebin.test
 
 import net.pearx.kpastebin.PasteNotFoundException
 import net.pearx.kpastebin.model.*
-import net.pearx.kpastebin.test.helper.createClient
-import net.pearx.kpastebin.test.helper.globalUserKey
-import net.pearx.kpastebin.test.helper.pastes
-import net.pearx.kpastebin.test.helper.runTest
+import net.pearx.kpastebin.test.helper.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -103,5 +100,10 @@ class LoggedInTest {
         for ((key, text) in pastes) {
             assertEquals(text, createClient(userKey = globalUserKey).getPaste(key))
         }
+    }
+
+    @Test
+    fun gettingPastesEmpty() = runTest {
+        assertEquals(listOf(), createClient(userKey = emptyPastesUserKey).listPastes())
     }
 }
