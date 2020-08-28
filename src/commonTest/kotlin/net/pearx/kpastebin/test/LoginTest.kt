@@ -16,21 +16,21 @@ import kotlin.test.assertFailsWith
 
 class LoginTest {
     @Test
-    fun `logging in with inactive credentials`() = runTest {
+    fun loggingInWithInactiveCredentials() = runTest {
         assertFailsWith<AccountNotActiveException> {
             createClient().login(inactiveCredentials.first, inactiveCredentials.second)
         }
     }
 
     @Test
-    fun `logging in with invalid credentials`() = runTest {
+    fun loggingInWithInvalidCredentials() = runTest {
         assertFailsWith<InvalidLoginException> {
             createClient().login("ABC", "DEF")
         }
     }
 
     @Test
-    fun `logging in`() = runTest {
+    fun loggingIn() = runTest {
         val cl = createClient()
         cl.login(credentials.first, credentials.second)
         assertEquals(globalUserKey, cl.userKey)

@@ -19,12 +19,12 @@ import kotlin.test.assertFailsWith
 
 class LoggedInTest {
     @Test
-    fun `creating paste`() = runTest {
+    fun creatingPaste() = runTest {
         createClient(userKey = globalUserKey).createPaste("something")
     }
 
     @Test
-    fun `listing pastes with invalid results limit`() = runTest {
+    fun listingPastesWithInvalidResultsLimit() = runTest {
         assertFailsWith<IllegalArgumentException> {
             createClient(userKey = globalUserKey).listPastes(resultsLimit = 0)
         }
@@ -34,7 +34,7 @@ class LoggedInTest {
     }
 
     @Test
-    fun `listing pastes`() = runTest {
+    fun listingPastes() = runTest {
         assertEquals(listOf(
             PasteDetails(
                 "0b42rwhf",
@@ -64,7 +64,7 @@ class LoggedInTest {
     }
 
     @Test
-    fun `deleting non-existing paste`() = runTest {
+    fun deletingNonExistingPaste() = runTest {
         assertFailsWith<PasteNotFoundException> {
             createClient(userKey = globalUserKey).deletePaste("TEST")
         }
@@ -72,19 +72,19 @@ class LoggedInTest {
 
 
     @Test
-    fun `deleting paste`() = runTest {
+    fun deletingPaste() = runTest {
         createClient(userKey = globalUserKey).deletePaste(pastes.keys.first())
     }
 
     @Test
-    fun `getting non-existing paste`() = runTest {
+    fun gettingNonExistingPaste() = runTest {
         assertFailsWith<PasteNotFoundException> {
             createClient(userKey = globalUserKey).getPaste("TEST")
         }
     }
 
     @Test
-    fun `getting user details`() = runTest {
+    fun gettingUserDetails() = runTest {
         assertEquals(UserDetails(
             "wiz_kitty",
             "text",
@@ -99,7 +99,7 @@ class LoggedInTest {
     }
 
     @Test
-    fun `getting pastes`() = runTest {
+    fun gettingPastes() = runTest {
         for ((key, text) in pastes) {
             assertEquals(text, createClient(userKey = globalUserKey).getPaste(key))
         }

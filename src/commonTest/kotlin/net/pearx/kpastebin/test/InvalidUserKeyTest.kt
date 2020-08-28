@@ -16,35 +16,35 @@ import kotlin.test.assertFailsWith
 
 class InvalidUserKeyTest {
     @Test
-    fun `creating paste`() = runTest {
+    fun creatingPaste() = runTest {
         assertFailsWith<InvalidUserKeyException> {
             createClient(userKey = "invalid").createPaste("TEST")
         }
     }
 
     @Test
-    fun `listing pastes`() = runTest {
+    fun listingPastes() = runTest {
         assertFailsWith<InvalidUserKeyException> {
             createClient(userKey = "invalid").listPastes()
         }
     }
 
     @Test
-    fun `deleting paste`() = runTest {
+    fun deletingPaste() = runTest {
         assertFailsWith<InvalidUserKeyException> {
             createClient(userKey = "invalid").deletePaste(pastes.keys.first())
         }
     }
 
     @Test
-    fun `getting user details`() = runTest {
+    fun gettingUserDetails() = runTest {
         assertFailsWith<InvalidUserKeyException> {
             createClient(userKey = "invalid").getUserDetails()
         }
     }
 
     @Test
-    fun `getting paste`() = runTest {
+    fun gettingPaste() = runTest {
         assertFailsWith<InvalidUserKeyException> {
             createClient(userKey = "invalid").getPaste(pastes.keys.first())
         }

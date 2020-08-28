@@ -20,14 +20,14 @@ import kotlin.test.assertFailsWith
 
 class AnonymousTest {
     @Test
-    fun `getting non-existing paste fails with 404`() = runTest {
+    fun gettingNonExistingPasteFailsWith404() = runTest {
         assertFailsWith<PasteNotFoundException> {
             createClient("").getPaste("123")
         }
     }
 
     @Test
-    fun `getting paste`() = runTest {
+    fun gettingPaste() = runTest {
         val cl = createClient("")
         for ((pasteKey, pasteCode) in pastes) {
             assertEquals(pasteCode, cl.getPaste(pasteKey))
@@ -35,35 +35,35 @@ class AnonymousTest {
     }
 
     @Test
-    fun `creating paste with invalid devKey fails`() = runTest {
+    fun creatingPasteWithInvalidDevKeyFails() = runTest {
         assertFailsWith<InvalidDevKeyException> {
             createClient("").createPaste("SoMeThInG")
         }
     }
 
     @Test
-    fun `creating paste with empty body`() = runTest {
+    fun creatingPasteWithEmptyBody() = runTest {
         assertFailsWith<EmptyPasteException> {
             createClient().createPaste("")
         }
     }
 
     @Test
-    fun `creating paste with invalid format`() = runTest {
+    fun creatingPasteWithInvalidFormat() = runTest {
         assertFailsWith<InvalidPasteFormatException> {
             createClient().createPaste("test", format = "notatext")
         }
     }
 
     @Test
-    fun `creating paste with exceeding size limit`() = runTest {
+    fun creatingPasteWithExceedingSizeLimit() = runTest {
         assertFailsWith<PasteSizeException> {
             createClient().createPaste("a".repeat(2048))
         }
     }
 
     @Test
-    fun `creating paste`() = runTest {
+    fun creatingPaste() = runTest {
         val text = """
             class Main {
                 public static void main() {
