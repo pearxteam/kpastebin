@@ -8,7 +8,11 @@
 package net.pearx.kpastebin
 
 import io.ktor.client.HttpClient
+import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.features.ClientRequestException
+import io.ktor.client.features.HttpResponseValidator
+import io.ktor.client.features.RedirectResponseException
+import io.ktor.client.features.ServerResponseException
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.http.*
@@ -22,18 +26,32 @@ import net.pearx.kpastebin.model.UserDetails
  * Pastebin API client with specified unique developer API key.
  * You can get your key on [official Pastebin website](https://pastebin.com/doc_api#1).
  *
- * @param http Ktor [HttpClient] to use
+ * @param engine Ktor [HttpClientEngine] to use
  * @param devKey Unique developer API key
  * @param userKey user key used for requests. Use null for guest user.
  */
 public class PastebinClient(
-    private val http: HttpClient,
+    private val engine: HttpClientEngine,
     private val devKey: String,
     /**
      * User key used for requests. Use null for guest user. It also can be set using [login] method.
      */
     public var userKey: String? = null
 ) {
+    private val http = HttpClient(engine) {
+        HttpResponseValidator { // https://youtrack.jetbrains.com/issue/KTOR-406
+            validateResponse { response ->
+                when (response.status.value) {
+                    in 300..399 -> throw RedirectResponseException(response)
+                    in 400..499 -> throw ClientRequestException(response)
+                    in 500..599 -> throw ServerResponseException(response)
+                }
+            }
+        }
+
+        expectSuccess = false
+    }
+
     private suspend fun sendRequest(url: String, userKeyRequired: Boolean, userKey: String?, parameters: Parameters): String {
         val usrKey = userKey ?: this.userKey
         if (userKeyRequired && usrKey == null)
