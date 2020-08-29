@@ -38,7 +38,7 @@ const val globalUserKey = "KeYkEyKeY"
 
 lateinit var lastCreatedPaste: Map<String, String?>
 
-fun createClient(devKey: String = globalDevKey, userKey: String? = null) = PastebinClient(createMockEngine(), devKey, userKey)
+fun createClient(devKey: String = globalDevKey, userKey: String? = null) = PastebinClient(devKey, createMockEngine(), userKey)
 
 fun createMockEngine() = MockEngine.create {
         addHandler { request ->
