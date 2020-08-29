@@ -1,5 +1,5 @@
 # KPastebin [![Maven Central](https://img.shields.io/maven-central/v/net.pearx.kpastebin/kpastebin.svg?label=version&logo=kotlin&logoColor=white)](https://search.maven.org/search?q=g:%22net.pearx.kpastebin%22%20AND%20a:%22kpastebin%22) [![Awesome Kotlin Badge](https://kotlin.link/awesome-kotlin.svg)](https://github.com/KotlinBy/awesome-kotlin)
-[![License](https://img.shiel**ds.io/github/license/pearxteam/kpastebin.svg)](https://raw.githubusercontent.com/pearxteam/kpastebin/master/LICENSE.TXT)
+[![License](https://img.shields.io/github/license/pearxteam/kpastebin.svg)](https://raw.githubusercontent.com/pearxteam/kpastebin/master/LICENSE.TXT)
 [![Discord](https://img.shields.io/discord/136085738151346176.svg?logo=discord&logoColor=white)](https://discord.gg/q9cX9QE)
 ![Test & Deploy | develop](https://github.com/pearxteam/kpastebin/workflows/Test%20&%20Deploy%20%7C%20develop/badge.svg?branch=develop)
 ![Test & Deploy | master](https://github.com/pearxteam/kpastebin/workflows/Test%20&%20Deploy%20%7C%20master/badge.svg?branch=master)
