@@ -23,6 +23,7 @@ import net.pearx.kpastebin.internal.XML_PROPERTY_REGEX
  * @property url Paste URL.
  * @property hits Paste view count.
  */
+@ExperimentalUnsignedTypes
 public data class PasteDetails(
     val key: String,
     val date: ULong,

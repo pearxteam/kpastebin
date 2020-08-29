@@ -133,6 +133,7 @@ public class PastebinClient(
      *
      * @throws InvalidUserKeyException when [userKey] is null, expired or invalid.
      */
+    @ExperimentalUnsignedTypes
     public suspend fun listPastes(resultsLimit: Int = 50): List<PasteDetails> {
         require(resultsLimit in 1..1000) { "resultsLimit should be in range of 1 to 1000" }
         val out = sendRequest(API_URL_POST, true) {
