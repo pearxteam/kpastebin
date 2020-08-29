@@ -32,32 +32,32 @@ class LoggedInTest {
 
     @Test
     fun listingPastes() = runTest {
-        assertEquals(listOf(
-            PasteDetails(
-                "0b42rwhf",
-                1297953260UL,
-                "javascript test",
-                15,
-                1297956860UL,
-                Privacy.PUBLIC,
-                "JavaScript",
-                "javascript",
-                "https://pastebin.com/0b42rwhf",
-                15
-            ),
-            PasteDetails(
-                "0C343n0d",
-                1297694343UL,
-                "Welcome To Pastebin V3",
-                490,
-                0UL,
-                Privacy.PUBLIC,
-                "None",
-                "text",
-                "https://pastebin.com/0C343n0d",
-                65
-            )
-        ), createClient(userKey = globalUserKey).listPastes())
+        val pastes = createClient(userKey = globalUserKey).listPastes()
+        assertEquals(2, pastes.size)
+        pastes[0].apply {
+            assertEquals("0b42rwhf", key)
+            assertEquals(1297953260UL, date)
+            assertEquals("javascript test", title)
+            assertEquals(15, size)
+            assertEquals(1297956860UL, expireDate)
+            assertEquals(Privacy.PUBLIC, privacy)
+            assertEquals("JavaScript", formatLong)
+            assertEquals("javascript", formatShort)
+            assertEquals("https://pastebin.com/0b42rwhf", url)
+            assertEquals(15, hits)
+        }
+        pastes[1].apply {
+            assertEquals("0C343n0d", key)
+            assertEquals(1297694343UL, date)
+            assertEquals("Welcome To Pastebin V3", title)
+            assertEquals(490, size)
+            assertEquals(0UL, expireDate)
+            assertEquals(Privacy.PUBLIC, privacy)
+            assertEquals("None", formatLong)
+            assertEquals("text", formatShort)
+            assertEquals("https://pastebin.com/0C343n0d", url)
+            assertEquals(65, hits)
+        }
     }
 
     @Test
@@ -82,17 +82,17 @@ class LoggedInTest {
 
     @Test
     fun gettingUserDetails() = runTest {
-        assertEquals(UserDetails(
-            "wiz_kitty",
-            "text",
-            ExpireDate.NEVER,
-            "https://pastebin.com/cache/a/1.jpg",
-            Privacy.UNLISTED,
-            "https://myawesomesite.com",
-            "oh@dear.com",
-            "New York",
-            AccountType.PRO
-        ), createClient(userKey = globalUserKey).getUserDetails())
+        createClient(userKey = globalUserKey).getUserDetails().apply {
+            assertEquals("wiz_kitty", name)
+            assertEquals("text", defaultFormatShort)
+            assertEquals(ExpireDate.NEVER, defaultExpiration)
+            assertEquals("https://pastebin.com/cache/a/1.jpg", avatarUrl)
+            assertEquals(Privacy.UNLISTED, defaultPrivacy)
+            assertEquals("https://myawesomesite.com", website)
+            assertEquals("oh@dear.com", email)
+            assertEquals("New York", location)
+            assertEquals(AccountType.PRO, accountType)
+        }
     }
 
     @Test
