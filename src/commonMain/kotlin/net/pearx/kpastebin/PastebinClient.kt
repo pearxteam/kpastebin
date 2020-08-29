@@ -8,7 +8,9 @@
 package net.pearx.kpastebin
 
 import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.HttpClientEngineFactory
 import io.ktor.client.features.ClientRequestException
 import io.ktor.client.features.HttpResponseValidator
 import io.ktor.client.features.RedirectResponseException
@@ -26,30 +28,37 @@ import net.pearx.kpastebin.model.UserDetails
  * Pastebin API client with specified unique developer API key.
  * You can get your key on [official Pastebin website](https://pastebin.com/doc_api#1).
  *
- * @param engine Ktor [HttpClientEngine] to use
- * @param devKey Unique developer API key
- * @param userKey user key used for requests. Use null for guest user.
+ * @property devKey Unique developer API key
+ * @property engine Ktor [HttpClientEngine] to use. Use null to detect it automatically.
+ * @property userKey User key used for requests. Use null for guest user. It also can be set using [login] method.
  */
 public class PastebinClient(
-    private val engine: HttpClientEngine,
     private val devKey: String,
-    /**
-     * User key used for requests. Use null for guest user. It also can be set using [login] method.
-     */
+    private val engine: HttpClientEngine? = null,
     public var userKey: String? = null
 ) {
-    private val http = HttpClient(engine) {
-        HttpResponseValidator { // https://youtrack.jetbrains.com/issue/KTOR-406
-            validateResponse { response ->
-                when (response.status.value) {
-                    in 300..399 -> throw RedirectResponseException(response)
-                    in 400..499 -> throw ClientRequestException(response)
-                    in 500..599 -> throw ServerResponseException(response)
+    /**
+     * Constructs a new [PastebinClient] instance using specified [engine], [devKey] and [userKey].
+     * @see PastebinClient
+     */
+    public constructor(devKey: String, engine: HttpClientEngineFactory<*>, userKey: String? = null): this(devKey, engine.create(), userKey)
+
+    private val http: HttpClient
+    init {
+        val config: HttpClientConfig<*>.() -> Unit = {
+            HttpResponseValidator { // https://youtrack.jetbrains.com/issue/KTOR-406
+                validateResponse { response ->
+                    when (response.status.value) {
+                        in 300..399 -> throw RedirectResponseException(response)
+                        in 400..499 -> throw ClientRequestException(response)
+                        in 500..599 -> throw ServerResponseException(response)
+                    }
                 }
             }
-        }
 
-        expectSuccess = false
+            expectSuccess = false
+        }
+        http = if(engine == null) HttpClient(config) else HttpClient(engine, config)
     }
 
     private suspend fun sendRequest(url: String, userKeyRequired: Boolean, userKey: String?, parameters: Parameters): String {

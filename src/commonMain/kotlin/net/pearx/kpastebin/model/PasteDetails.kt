@@ -12,27 +12,27 @@ import net.pearx.kpastebin.internal.XML_PROPERTY_REGEX
 
 /**
  * A detailed Pastebin paste information.
+ * @property key Paste key.
+ * @property date Paste publication date in Unix time format.
+ * @property title Paste title.
+ * @property size Paste size in bytes.
+ * @property expireDate Paste expiration date in Unix time format.
+ * @property privacy Paste privacy status.
+ * @property formatLong Paste syntax highlighting language in a user-readable format (e.g., Kotlin or C#).
+ * @property formatShort Paste syntax highlighting language in a short format (e.g. kotlin or csharp).
+ * @property url Paste URL.
+ * @property hits Paste view count.
  */
 public data class PasteDetails(
-    /** Paste key. */
     val key: String,
-    /** Paste publication date in Unix time format. */
     val date: ULong,
-    /** Paste title. */
     val title: String,
-    /** Paste size in bytes. */
     val size: Int,
-    /** Paste expiration date in Unix time format. */
     val expireDate: ULong,
-    /** Paste privacy status. */
     val privacy: Privacy,
-    /** Paste syntax highlighting language in a user-readable format (e.g., Kotlin or C#). */
     val formatLong: String,
-    /** Paste syntax highlighting language in a short format (e.g. kotlin or csharp). */
     val formatShort: String,
-    /** Paste URL. */
     val url: String,
-    /** Paste view count. */
     val hits: Int
 ) {
     internal companion object {

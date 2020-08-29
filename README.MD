@@ -49,4 +49,18 @@ Multiplatform Kotlin library to interact with the pastebin.com API.
  implementation("net.pearx.kpastebin:kpastebin-PLATFORM_YOU_WANT:$kpastebinVersion") // for Native
 ```
 
-2. Use the library and have fun!
+2. Add [kotlinx.coroutines](https://github.com/Kotlin/kotlinx.coroutines) and any [Ktor client engine](https://ktor.io/clients/http-client/engines.html) to your project's dependencies.
+
+3. Use the library and have fun! See [net.pearx.kpastebin.PastebinClient](src/commonMain/kotlin/net/pearx/kpastebin/PastebinClient.kt) class KDoc for more info.
+
+# Examples
+```kotlin
+runBlocking {
+    // see KDoc for more info
+    val client = PastebinClient("your dev key") // create a PastebinClient instance. You can get your dev key here: https://pastebin.com/doc_api#1
+    client.getPaste("0b42rwhf") // getting a paste
+    
+    client.login("username", "password") // logging in
+    client.getUserDetails().accountType // getting current user account type
+}
+```

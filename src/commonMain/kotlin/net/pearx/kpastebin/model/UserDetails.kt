@@ -12,25 +12,25 @@ import net.pearx.kpastebin.internal.XML_PROPERTY_REGEX
 
 /**
  * A detailed Pastebin user information.
+ * @property name Full user name.
+ * @property defaultFormatShort Default paste syntax highlighting language for this user in a short format (e.g., kotlin or csharp).
+ * @property defaultExpiration Default paste expiration duration for this user.
+ * @property avatarUrl User avatar URL.
+ * @property defaultPrivacy Default paste privacy status for this user.
+ * @property website User website.
+ * @property email User E-Mail.
+ * @property location User location.
+ * @property accountType User account type.
  */
 public data class UserDetails(
-    /** Full user name. */
     val name: String,
-    /** Default paste syntax highlighting language for this user in a short format (e.g., kotlin or csharp). */
     val defaultFormatShort: String,
-    /** Default paste expiration duration for this user. */
     val defaultExpiration: ExpireDate,
-    /** User avatar URL. */
     val avatarUrl: String,
-    /** Default paste privacy status for this user. */
     val defaultPrivacy: Privacy,
-    /** User website. */
     val website: String,
-    /** User E-Mail. */
     val email: String,
-    /** User location. */
     val location: String,
-    /** User account type. */
     val accountType: AccountType
 ) {
     internal companion object {
