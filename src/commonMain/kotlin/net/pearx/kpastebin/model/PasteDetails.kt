@@ -16,8 +16,8 @@ import net.pearx.kpastebin.internal.XML_PROPERTY_REGEX
 public data class PasteDetails(
     /** Paste key. */
     val key: String,
-    /** Paste publication date. */
-    val date: Int,
+    /** Paste publication date in Unix time format. */
+    val date: ULong,
     /** Paste title. */
     val title: String,
     /** Paste size in bytes. */
@@ -44,7 +44,7 @@ public data class PasteDetails(
                     val map = XML_PROPERTY_REGEX.findAll(paste.groupValues[2]).associate { it.groupValues[1].substring(6) to it.groupValues[2] } // .substring(6) is here to cut the 'paste_' part of each property.
                     lst.add(PasteDetails(
                         map.getValue("key"),
-                        map.getValue("date").toInt(),
+                        map.getValue("date").toULong(),
                         map.getValue("title"),
                         map.getValue("size").toInt(),
                         map.getValue("expire_date").toULong(),

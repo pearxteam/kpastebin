@@ -35,7 +35,7 @@ class LoggedInTest {
         assertEquals(listOf(
             PasteDetails(
                 "0b42rwhf",
-                1297953260,
+                1297953260UL,
                 "javascript test",
                 15,
                 1297956860UL,
@@ -47,7 +47,7 @@ class LoggedInTest {
             ),
             PasteDetails(
                 "0C343n0d",
-                1297694343,
+                1297694343UL,
                 "Welcome To Pastebin V3",
                 490,
                 0UL,
